@@ -1,4 +1,4 @@
-function [pose, traj, flag] = rpp_plan(start, goal, varargin)
+function [pose, traj, flag, lin_velocity] = rpp_plan(start, goal, varargin)
 %%
 % @file: rpp_plan.m
 % @breif: Regulated Pure Pursuit (RPP) motion planning
@@ -36,13 +36,13 @@ function [pose, traj, flag] = rpp_plan(start, goal, varargin)
     % common parameters
     param.dt = 0.1;
     param.max_iteration = 1500;
-    param.goal_dist_tol = 0.5;
+    param.goal_dist_tol = 1.0;
     param.rotate_tol = 0.5;
     param.lookahead_time = 1.0;
-    param.min_lookahead_dist = 1.5;
+    param.min_lookahead_dist = 1.0;
     param.max_lookahead_dist = 2.5;
     param.max_v_inc = 0.5;
-    param.max_v = 0.5;
+    param.max_v = 1.0;
     param.min_v = 0.0;
     param.max_w_inc = pi / 2;
     param.max_w = pi / 2;
@@ -52,6 +52,7 @@ function [pose, traj, flag] = rpp_plan(start, goal, varargin)
     flag = false;
     pose = [];
     traj = [];
+    lin_velocity = [];
     
     % main loop
     iter = 0;
@@ -101,6 +102,7 @@ function [pose, traj, flag] = rpp_plan(start, goal, varargin)
         % input into robotic kinematic
         robot = f(robot, u, param.dt);
         pose = [pose; robot.x, robot.y, robot.theta];
+        lin_velocity = [lin_velocity; robot.v];
     end
 end
 

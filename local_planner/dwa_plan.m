@@ -1,4 +1,4 @@
-function [pose, traj, flag] = dwa_plan(start, goal, varargin)
+function [pose, traj, flag, lin_velocity] = dwa_plan(start, goal, varargin)
 %%
 % @file: dwa_plan.m
 % @breif: DWA motion planning
@@ -31,6 +31,7 @@ function [pose, traj, flag] = dwa_plan(start, goal, varargin)
     flag = false;
     pose = [];
     traj = [];
+    lin_velocity = [];
     
     % initial robotic state
     robot.x = start(1);
@@ -69,6 +70,7 @@ function [pose, traj, flag] = dwa_plan(start, goal, varargin)
         robot = f(robot, u, eval_param(5));
         
         pose = [pose; robot.x, robot.y, robot.theta];
+        lin_velocity = [lin_velocity; robot.v];
         traj_i.info = traj_win;
         traj = [traj; traj_i];
         

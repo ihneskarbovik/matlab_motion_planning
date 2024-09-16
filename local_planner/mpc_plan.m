@@ -1,4 +1,4 @@
-function [pose, traj, flag] = mpc_plan(start, goal, varargin)
+function [pose, traj, flag, lin_velocity] = mpc_plan(start, goal, varargin)
 %%
 % @file: mpc_plan.m
 % @breif: Model Predicted Control (MPC) motion planning
@@ -54,6 +54,7 @@ function [pose, traj, flag] = mpc_plan(start, goal, varargin)
     flag = false;
     pose = [];
     traj = [];
+    lin_velocity = [];
     
     % main loop
     iter = 0;
@@ -99,6 +100,7 @@ function [pose, traj, flag] = mpc_plan(start, goal, varargin)
         % input into robotic kinematic
         robot = f(robot, u, param.dt);
         pose = [pose; robot.x, robot.y, robot.theta];
+        lin_velocity = [lin_velocity; robot.v];
     end
 end
 

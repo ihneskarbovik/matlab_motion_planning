@@ -1,4 +1,4 @@
-function [pose, traj, flag] = apf_plan(start, goal, varargin)
+function [pose, traj, flag, lin_velocity] = apf_plan(start, goal, varargin)
 %%
 % @file: apf_plan.m
 % @breif: Artificial Potential Field motion planning
@@ -36,7 +36,7 @@ function [pose, traj, flag] = apf_plan(start, goal, varargin)
     robot.theta = start(3);
     robot.v = 0;
     robot.w = 0;
-    max_v = 0.4;
+    max_v = 1.0;
     
     % parameters
     zeta = 1.0;
@@ -55,6 +55,7 @@ function [pose, traj, flag] = apf_plan(start, goal, varargin)
     flag = false;
     pose = [];
     traj = [];
+    lin_velocity = [];
     
      iter = 0;
     % main loop
@@ -113,6 +114,7 @@ function [pose, traj, flag] = apf_plan(start, goal, varargin)
     % input into robotic kinematic
     robot = f(robot, u, dt);
     pose = [pose; robot.x, robot.y, robot.theta];
+    lin_velocity = [lin_velocity; robot.v];
     end
 end
 
