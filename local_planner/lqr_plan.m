@@ -1,4 +1,4 @@
-function [pose, traj, flag] = lqr_plan(start, goal, varargin)
+function [pose, traj, flag, lin_velocity] = lqr_plan(start, goal, varargin)
 %%
 % @file: lqr_plan.m
 % @breif: Linear Quadratic Regulator(LQR) motion planning
@@ -49,6 +49,7 @@ function [pose, traj, flag] = lqr_plan(start, goal, varargin)
     flag = false;
     pose = [];
     traj = [];
+    lin_velocity = [];
     
     % main loop
     iter = 0;
@@ -93,6 +94,7 @@ function [pose, traj, flag] = lqr_plan(start, goal, varargin)
         % input into robotic kinematic
         robot = f(robot, u, param.dt);
         pose = [pose; robot.x, robot.y, robot.theta];
+        lin_velocity = [lin_velocity; robot.v];
     end
 end
 
